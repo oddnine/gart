@@ -1,11 +1,13 @@
 package com.project.gart.service;
 
+import com.project.gart.domain.Genre;
 import com.project.gart.domain.User;
 import com.project.gart.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Transactional
@@ -28,14 +30,7 @@ public class UserService {
     }
 
     public Boolean login(String email, String password) {
-        return validateLogin(email, password);
-    }
-
-    private Boolean validateLogin(String email, String password) {
         Optional<User> findUser = userRepository.findByEmailAndPassword(email, password);
-        if (!findUser.isEmpty()) {
-            return true;
-        }
-        return false;
+        return findUser.get().validatePassword(password);
     }
 }
