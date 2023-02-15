@@ -1,10 +1,7 @@
 package com.project.gart.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Date;
 
@@ -39,5 +36,15 @@ public class User {
             return false;
         }
         return true;
+    }
+
+    public User updateUser(User user) {
+        this.password = user.getPassword();
+        this.name = user.getName();
+        this.birthday = user.getBirthday();
+        this.address = user.getAddress();
+        this.photo = user.getPhoto();
+
+        return this;
     }
 }

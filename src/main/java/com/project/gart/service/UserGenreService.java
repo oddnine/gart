@@ -4,13 +4,11 @@ import com.project.gart.domain.Genre;
 import com.project.gart.domain.User;
 import com.project.gart.domain.UserGenre;
 import com.project.gart.repository.UserGenreRepository;
-import com.project.gart.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Transactional
@@ -18,9 +16,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserGenreService {
     private final UserGenreRepository userGenreRepository;
-    private final UserRepository userRepository;
 
-    public void saveUserGenre(User user, List<Genre> genres) {
+    public void saveUserGenres(User user, List<Genre> genres) {
         List<UserGenre> userGenres = new ArrayList<>();
         for (Genre genre : genres) {
             UserGenre userGenre = UserGenre.builder()
@@ -34,7 +31,7 @@ public class UserGenreService {
         userGenreRepository.saveAll(userGenres);
     }
 
-    public void updateUserGenre(User user, List<Genre> genres) {
+    public void updateUserGenres(User user, List<Genre> genres) {
         deleteAllByUserId(user);
 
         List<UserGenre> userGenres = new ArrayList<>();

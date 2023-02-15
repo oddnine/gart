@@ -8,14 +8,15 @@ import java.util.Date;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Setter
 public class Work {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long wordId;
-    private String wordResource;
+    private Long workId;
+    private String workResource;
     private Date workDate;
-    private String wordCategory;
-    private String wordDescription;
+    private String workCategory;
+    private String workDescription;
     private Boolean isDelete;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -23,13 +24,28 @@ public class Work {
     private User fkUserId;
 
     @Builder
-    public Work(Long wordId, String wordResource, Date workDate, String wordCategory, String wordDescription, Boolean isDelete, User fkUserId) {
-        this.wordId = wordId;
-        this.wordResource = wordResource;
-        this.workDate = workDate;
-        this.wordCategory = wordCategory;
-        this.wordDescription = wordDescription;
+    public Work(Long workId, String workResource, Date workDate, String workCategory, String workDescription, Boolean isDelete, User fkUserId) {
+        this.workId = workId;
+        this.workResource = workResource;
+        this.workDate = new Date();
+        this.workCategory = workCategory;
+        this.workDescription = workDescription;
         this.isDelete = isDelete;
         this.fkUserId = fkUserId;
+    }
+
+    public void setUser(User user) {
+        this.fkUserId = user;
+    }
+
+    public Work updateWork(Work updateWork) {
+        this.workCategory = updateWork.getWorkCategory();
+        this.workDescription = updateWork.getWorkDescription();
+
+        return this;
+    }
+
+    public void deleteWork() {
+        this.isDelete = true;
     }
 }

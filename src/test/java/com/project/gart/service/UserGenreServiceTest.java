@@ -4,10 +4,10 @@ import com.project.gart.domain.Genre;
 import com.project.gart.domain.User;
 import com.project.gart.domain.UserGenre;
 import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 
 import java.sql.Date;
 import java.util.Arrays;
@@ -27,9 +27,11 @@ class UserGenreServiceTest {
     @Autowired
     private GenreService genreService;
 
-    @Test
-    public void saveUserGenre() {
-        User user = User.builder()
+    private User user;
+
+    @BeforeEach
+    public void beforeEach() {
+        user = User.builder()
                 .email("hyuk@naver.com")
                 .address("경기도")
                 .name("혁키")
@@ -39,7 +41,10 @@ class UserGenreServiceTest {
                 .build();
 
         userService.join(user);
+    }
 
+    @Test
+    public void saveUserGenre() {
         Genre genre = Genre.builder()
                 .genreName("스릴")
                 .build();
@@ -56,22 +61,11 @@ class UserGenreServiceTest {
                 .userId(user.getUserId())
                 .build();
 
-        userGenreService.saveUserGenre(user1, genres);
+        userGenreService.saveUserGenres(user1, genres);
     }
 
     @Test
     public void findAllByUserId() {
-        User user = User.builder()
-                .email("hyuk@naver.com")
-                .address("경기도")
-                .name("혁키")
-                .password("123")
-                .birthday(Date.valueOf("1999-09-02"))
-                .photo("ewqewqe")
-                .build();
-
-        userService.join(user);
-
         Genre genre = Genre.builder()
                 .genreName("스릴")
                 .build();
@@ -88,7 +82,7 @@ class UserGenreServiceTest {
                 .userId(user.getUserId())
                 .build();
 
-        userGenreService.saveUserGenre(user1, genres);
+        userGenreService.saveUserGenres(user1, genres);
 
         List<UserGenre> byUserGenres = userGenreService.findByFkUserId(user1);
 
@@ -97,17 +91,6 @@ class UserGenreServiceTest {
 
     @Test
     public void deleteAllTest() {
-        User user = User.builder()
-                .email("hyuk@naver.com")
-                .address("경기도")
-                .name("혁키")
-                .password("123")
-                .birthday(Date.valueOf("1999-09-02"))
-                .photo("ewqewqe")
-                .build();
-
-        userService.join(user);
-
         Genre genre = Genre.builder()
                 .genreName("스릴")
                 .build();
@@ -120,7 +103,7 @@ class UserGenreServiceTest {
 
         genreService.saveGenres(genres);
 
-        userGenreService.saveUserGenre(user, genres);
+        userGenreService.saveUserGenres(user, genres);
 
         assertThat(userGenreService.deleteAllByUserId(user)).isEqualTo(2);
     }
