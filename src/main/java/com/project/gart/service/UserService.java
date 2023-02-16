@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-@Transactional
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
@@ -30,7 +30,10 @@ public class UserService {
     }
 
     public Boolean login(String email, String password) {
-        Optional<User> findUser = userRepository.findByEmailAndPassword(email, password);
-        return findUser.get().validatePassword(password);
+        User findUser = userRepository.findByEmail(email).orElse(null);
+        if (findUser == null) {
+            return false;
+        }
+        return findUser.validatePassword(password);
     }
 }

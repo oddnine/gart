@@ -68,6 +68,7 @@ class UserServiceTest {
         userService.join(user);
 
         assertThat(userService.login(user.getEmail(), user.getPassword())).isTrue();
+        assertThat(userService.login(user.getEmail(), "fsdfdsfsd")).isFalse();
         assertThat(userService.login("qweqwer", "qweqewwqe")).isFalse();
     }
 }

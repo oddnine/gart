@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-@Transactional
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class GenreService {
     private final GenreRepository genreRepository;
