@@ -20,13 +20,18 @@ public class Post {
     @JoinColumn(name = "FK_WORK_ID")
     private Work fkWorkId;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "FK_USER_ID")
+    private User fkUserId;
+
     @Builder
-    public Post(Long postId, String postTitle, String postDescription, LocalDateTime postDate, Boolean isDelete, Work fkWorkId) {
+    public Post(Long postId, String postTitle, String postDescription, LocalDateTime postDate, Boolean isDelete, Work fkWorkId, User fkUserId) {
         this.postId = postId;
         this.postTitle = postTitle;
         this.postDescription = postDescription;
-        this.postDate = postDate;
+        this.postDate = LocalDateTime.now();
         this.isDelete = isDelete;
         this.fkWorkId = fkWorkId;
+        this.fkUserId = fkUserId;
     }
 }

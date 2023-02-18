@@ -2,6 +2,7 @@ package com.project.gart.service;
 
 import com.project.gart.domain.User;
 import com.project.gart.domain.Work;
+import com.project.gart.domain.dto.WorkDto;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,13 +35,13 @@ class WorkServiceTest {
     public void uploadAndUpdateWorkTest() {
         Work work = Work.builder().workName("작품1").workResource("qwewqe").workCategory("미술").workDescription("작품입니다.").isDelete(false).build();
 
-        workService.uploadWork(user, work);
+        workService.save(user, work);
 
         Work update = Work.builder().workName("작품1").workResource("qwewqe").workCategory("음악").workDescription("음악 작품입니다.").isDelete(false).build();
 
         workService.updateWork(work, update);
 
-        Work find = workService.findByWorkId(work.getWorkId());
+        WorkDto find = workService.findByWorkId(work.getWorkId());
 
         assertThat(find.getWorkCategory()).isEqualTo("음악");
     }
@@ -49,11 +50,11 @@ class WorkServiceTest {
     public void deleteTest() {
         Work work = Work.builder().workName("작품1").workResource("qwewqe").workCategory("미술").workDescription("작품입니다.").isDelete(false).build();
 
-        workService.uploadWork(user, work);
+        workService.save(user, work);
 
-        workService.deleteWork(work.getWorkId());
+        workService.delete(work.getWorkId());
 
-        Work findWork = workService.findByWorkId(work.getWorkId());
+        WorkDto findWork = workService.findByWorkId(work.getWorkId());
 
         assertThat(findWork.getIsDelete()).isTrue();
     }

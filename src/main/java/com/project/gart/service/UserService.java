@@ -1,10 +1,15 @@
 package com.project.gart.service;
 
 import com.project.gart.domain.User;
+import com.project.gart.domain.dto.UserDto;
 import com.project.gart.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -22,6 +27,14 @@ public class UserService {
                 .ifPresent(m -> {
                     throw new IllegalStateException("이미 존재하는 회원입니다.");
                 });
+    }
+
+    public List<User> findByName(String name) {
+        return userRepository.findByName(name);
+    }
+
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email).orElse(null);
     }
 
     public Boolean login(String email, String password) {

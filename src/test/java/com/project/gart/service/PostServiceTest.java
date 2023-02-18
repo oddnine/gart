@@ -1,34 +1,27 @@
 package com.project.gart.service;
 
-import com.project.gart.domain.Genre;
+import com.project.gart.domain.Post;
 import com.project.gart.domain.User;
-import com.project.gart.domain.UserGenre;
 import com.project.gart.domain.Work;
+import com.project.gart.domain.dto.PostDto;
 import jakarta.transaction.Transactional;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-class GenreServiceTest {
-
+class PostServiceTest {
     @Autowired
-    private GenreService genreService;
-
-    @Autowired
-    private UserGenreService userGenreService;
-
-    @Autowired
-    private WorkGenreService workGenreService;
+    private PostService postService;
 
     @Autowired
     private UserService userService;
@@ -40,6 +33,9 @@ class GenreServiceTest {
     private Work work;
     private Work work1;
     private Work work2;
+    private Post post;
+    private Post post1;
+    private Post post2;
 
     @BeforeEach
     void beforeEach() {
@@ -58,40 +54,39 @@ class GenreServiceTest {
         workService.save(user, work1);
 
         workService.save(user, work2);
+
+        post = Post.builder()
+                .postTitle("내 작품 보시오")
+                .postDescription("설명")
+                .fkUserId(user)
+                .fkWorkId(work).build();
+
+        postService.save(post);
+
+        post1 = Post.builder()
+                .postTitle("내 작품 보시오1111111")
+                .postDescription("설명1111111")
+                .fkUserId(user)
+                .fkWorkId(work1).build();
+
+        postService.save(post1);
+
+        post2 = Post.builder()
+                .postTitle("내 작품 보시오2222222")
+                .postDescription("설명22222222")
+                .fkUserId(user)
+                .fkWorkId(work2).build();
+
+        postService.save(post2);
     }
 
     @Test
-    public void 장르_등록_후_조회_시나리오() {
-        Genre genre = Genre.builder()
-                .genreName("밝은")
-                .build();
+    public void 이름으로_게시글_찾기() {
+        assertThat(postService.findByUserName(user.getName()).size()).isEqualTo(3);
+    }
 
-        Genre genre1 = Genre.builder()
-                .genreName("어두운")
-                .build();
-
-        Genre genre2 = Genre.builder()
-                .genreName("신나는")
-                .build();
-
-        genreService.saveGenres(Arrays.asList(genre, genre1, genre2));
-
-        userGenreService.saveUserGenres(user, Arrays.asList(genre, genre1));
-
-        workGenreService.saveWorkGenres(work, Arrays.asList(genre, genre1));
-
-        workGenreService.saveWorkGenres(work1, Arrays.asList(genre1, genre2));
-
-        workGenreService.saveWorkGenres(work2, Arrays.asList(genre2));
-
-        List<UserGenre> findUserGenres = userGenreService.findByFkUserId(user);
-
-        List<Genre> genres = new ArrayList<>();
-
-        for (UserGenre findUserGenre : findUserGenres) {
-            genres.add(findUserGenre.getFkGenreId());
-        }
-
-        assertThat(workGenreService.findByFkGenreIds(genres).size()).isEqualTo(2); //2개여야 함
+    @Test
+    public void 이메일로_게시글_찾기() {
+        assertThat(postService.findByUserEmail(user.getEmail()).size()).isEqualTo(3);
     }
 }

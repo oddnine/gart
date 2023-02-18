@@ -4,6 +4,7 @@ import com.project.gart.domain.Genre;
 import com.project.gart.domain.User;
 import com.project.gart.domain.UserGenre;
 import com.project.gart.domain.Work;
+import com.project.gart.domain.dto.WorkDto;
 import com.project.gart.repository.UserGenreRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -57,7 +58,7 @@ public class UserGenreService {
         return userGenreRepository.deleteAllByFkUserId(user);
     }
 
-    public List<Work> findWorkByUserGenre(User user) {
+    public List<WorkDto> findWorkByUserGenre(User user) {
         List<UserGenre> findUserGenres = userGenreRepository.findByFkUserId(user);
 
         List<Genre> genres = new ArrayList<>();

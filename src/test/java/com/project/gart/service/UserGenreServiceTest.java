@@ -51,11 +51,11 @@ class UserGenreServiceTest {
 
         work2 = Work.builder().workName("작품3").workResource("qqewqeqwwee").workCategory("미술").workDescription("작품2입니다.").isDelete(false).build();
 
-        workService.uploadWork(user, work);
+        workService.save(user, work);
 
-        workService.uploadWork(user, work1);
+        workService.save(user, work1);
 
-        workService.uploadWork(user, work2);
+        workService.save(user, work2);
     }
 
     @Test

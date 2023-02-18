@@ -1,6 +1,7 @@
 package com.project.gart.service;
 
 import com.project.gart.domain.*;
+import com.project.gart.domain.dto.WorkDto;
 import com.project.gart.repository.WorkGenreRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -50,7 +51,7 @@ public class WorkGenreService {
         return workGenreRepository.findByFkWorkId(work);
     }
 
-    public List<Work> findByFkGenreIds(List<Genre> genres) {
+    public List<WorkDto> findByFkGenreIds(List<Genre> genres) {
         List<WorkGenre> findWorkGenres = workGenreRepository.findAllByFkGenreIdIn(genres);
         return workService.findByWorkGenre(findWorkGenres);
     }
