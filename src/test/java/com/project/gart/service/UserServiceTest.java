@@ -1,7 +1,6 @@
 package com.project.gart.service;
 
 import com.project.gart.domain.User;
-import com.project.gart.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.sql.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -29,7 +27,7 @@ class UserServiceTest {
                 .photo("ewqewqe")
                 .build();
 
-        assertThat(userService.join(user)).isTrue();
+        assertThat(userService.save(user)).isEqualTo(user.getUserId());
     }
 
     @Test
@@ -43,15 +41,14 @@ class UserServiceTest {
                 .photo("ewqewqe")
                 .build();
 
-        userService.join(user);
-        Boolean join = false;
+        Long userId = null;
         try {
-            join = userService.join(user);
+            userId = userService.save(user);
         } catch (Exception e) {
             System.out.println(e);
         }
 
-        assertThat(join).isFalse();
+        assertThat(userId).isNotNull();
     }
 
     @Test
@@ -65,7 +62,7 @@ class UserServiceTest {
                 .photo("ewqewqe")
                 .build();
 
-        userService.join(user);
+        userService.save(user);
 
         assertThat(userService.login(user.getEmail(), user.getPassword())).isTrue();
         assertThat(userService.login(user.getEmail(), "fsdfdsfsd")).isFalse();

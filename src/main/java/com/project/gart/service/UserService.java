@@ -1,14 +1,10 @@
 package com.project.gart.service;
 
-import com.project.gart.domain.Genre;
 import com.project.gart.domain.User;
 import com.project.gart.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -16,10 +12,9 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
 
-    public Boolean join(User user) {
+    public Long save(User user) {
         validateDuplicateUser(user);
-        userRepository.save(user);
-        return true;
+        return userRepository.save(user).getUserId();
     }
 
     private void validateDuplicateUser(User user) {

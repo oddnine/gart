@@ -9,7 +9,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -17,7 +16,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -47,13 +45,13 @@ class GenreServiceTest {
     void beforeEach() {
         user = User.builder().email("hyuk@naver.com").address("경기도").name("혁키").password("123").birthday(Date.valueOf("1999-09-02")).photo("ewqewqe").build();
 
-        userService.join(user);
+        userService.save(user);
 
-        work = Work.builder().workResource("qwewqe").workCategory("미술").workDescription("작품입니다.").isDelete(false).build();
+        work = Work.builder().workName("작품1").workResource("qwewqe").workCategory("미술").workDescription("작품입니다.").isDelete(false).build();
 
-        work1 = Work.builder().workResource("qqwee").workCategory("음악").workDescription("음악입니다.").isDelete(false).build();
+        work1 = Work.builder().workName("작품2").workResource("qqwee").workCategory("음악").workDescription("음악입니다.").isDelete(false).build();
 
-        work2 = Work.builder().workResource("qqewqeqwwee").workCategory("미술").workDescription("작품2입니다.").isDelete(false).build();
+        work2 = Work.builder().workName("작품3").workResource("qqewqeqwwee").workCategory("미술").workDescription("작품2입니다.").isDelete(false).build();
 
         workService.uploadWork(user, work);
 

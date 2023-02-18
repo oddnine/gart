@@ -3,6 +3,7 @@ package com.project.gart.service;
 import com.project.gart.domain.Genre;
 import com.project.gart.domain.User;
 import com.project.gart.domain.UserGenre;
+import com.project.gart.domain.Work;
 import com.project.gart.repository.UserGenreRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserGenreService {
     private final UserGenreRepository userGenreRepository;
+    private final WorkGenreService workGenreService;
 
     public void saveUserGenres(User user, List<Genre> genres) {
         List<UserGenre> userGenres = new ArrayList<>();
@@ -51,7 +53,19 @@ public class UserGenreService {
         return userGenreRepository.findByFkUserId(user);
     }
 
-    public int deleteAllByUserId(User user){
+    public int deleteAllByUserId(User user) {
         return userGenreRepository.deleteAllByFkUserId(user);
+    }
+
+    public List<Work> findWorkByUserGenre(User user) {
+        List<UserGenre> findUserGenres = userGenreRepository.findByFkUserId(user);
+
+        List<Genre> genres = new ArrayList<>();
+
+        for (UserGenre findUserGenre : findUserGenres) {
+            genres.add(findUserGenre.getFkGenreId());
+        }
+
+        return workGenreService.findByFkGenreIds(genres);
     }
 }

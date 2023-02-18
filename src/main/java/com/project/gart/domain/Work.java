@@ -13,6 +13,7 @@ public class Work {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long workId;
+    private String workName;
     private String workResource;
     private Date workDate;
     private String workCategory;
@@ -24,8 +25,9 @@ public class Work {
     private User fkUserId;
 
     @Builder
-    public Work(Long workId, String workResource, Date workDate, String workCategory, String workDescription, Boolean isDelete, User fkUserId) {
+    public Work(Long workId, String workName, String workResource, Date workDate, String workCategory, String workDescription, Boolean isDelete, User fkUserId) {
         this.workId = workId;
+        this.workName = workName;
         this.workResource = workResource;
         this.workDate = new Date();
         this.workCategory = workCategory;
@@ -39,6 +41,7 @@ public class Work {
     }
 
     public Work updateWork(Work updateWork) {
+        this.workName = updateWork.workName;
         this.workCategory = updateWork.getWorkCategory();
         this.workDescription = updateWork.getWorkDescription();
 
