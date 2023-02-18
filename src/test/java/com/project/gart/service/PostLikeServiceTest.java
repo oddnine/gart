@@ -1,9 +1,11 @@
 package com.project.gart.service;
 
 import com.project.gart.domain.Post;
+import com.project.gart.domain.PostLike;
 import com.project.gart.domain.User;
 import com.project.gart.domain.Work;
 import jakarta.transaction.Transactional;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +14,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.sql.Date;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-class PostServiceTest {
+class PostLikeServiceTest {
+    @Autowired
+    private PostLikeService postLikeService;
+
     @Autowired
     private PostService postService;
 
@@ -26,6 +32,7 @@ class PostServiceTest {
     private WorkService workService;
 
     private User user;
+    private User user1;
     private Work work;
     private Work work1;
     private Work work2;
@@ -38,6 +45,10 @@ class PostServiceTest {
         user = User.builder().email("hyuk@naver.com").address("경기도").name("혁키").password("123").birthday(Date.valueOf("1999-09-02")).photo("ewqewqe").build();
 
         userService.save(user);
+
+        user1 = User.builder().email("ju@naver.com").address("경기도").name("주주").password("123").birthday(Date.valueOf("1999-07-10")).photo("aaa").build();
+
+        userService.save(user1);
 
         work = Work.builder().workName("작품1").workResource("qwewqe").workCategory("미술").workDescription("작품입니다.").isDelete(false).build();
 
@@ -77,18 +88,56 @@ class PostServiceTest {
     }
 
     @Test
-    public void 이름으로_게시글_찾기() {
-        assertThat(postService.findByUserName(user.getName()).size()).isEqualTo(3);
+    void 저장_삭제_및_조회() {
+        //좋아요
+        Long num = null;
+        try {
+            num = postLikeService.save(post, user1);
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+
+        assertThat(num).isNotNull();
+
+        assertThat(postLikeService.findByPostAndUser(post, user1)).isNotNull();
+
+        assertThatThrownBy(() -> postLikeService.save(post, user1))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("좋아요를 이미 누르셨습니다.");
+
+        //삭제
+        try {
+            postLikeService.delete(post, user1);
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+
+        assertThat(postLikeService.findByPostAndUser(post, user1)).isNull();
+
+        assertThatThrownBy(() -> postLikeService.delete(post, user1))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("좋아요를 아직 안 누르셨습니다.");
     }
 
     @Test
-    public void 이메일로_게시글_찾기() {
-        assertThat(postService.findByUserEmail(user.getEmail()).size()).isEqualTo(3);
+    void likedUserList() {
+        try {
+            postLikeService.save(post, user);
+            postLikeService.save(post, user1);
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+        assertThat(postLikeService.likedUserList(post).size()).isEqualTo(2);
     }
 
     @Test
-    public void 제목으로_게시글_찾기() {
-        assertThat(postService.findByPostTitleContaining("작품").size()).isEqualTo(3);
-        assertThat(postService.findByPostTitleContaining(post1.getPostTitle()).size()).isEqualTo(1);
+    void countByPost() {
+        try {
+            postLikeService.save(post, user);
+            postLikeService.save(post, user1);
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+        assertThat(postLikeService.countByPost(post)).isEqualTo(2L);
     }
 }

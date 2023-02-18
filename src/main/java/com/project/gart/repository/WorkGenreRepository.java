@@ -8,7 +8,7 @@ import java.util.List;
 public interface WorkGenreRepository extends JpaRepository<WorkGenre, Long> {
     List<WorkGenre> findByFkWorkId(Work fkWorkId);
 
-    int deleteAllByFkWorkId(Work fkWorkId);
+    int deleteByFkWorkId(Work fkWorkId);
 
-    List<WorkGenre> findAllByFkGenreIdIn(List<Genre> FkGenreId);
+    List<WorkGenre> findByFkGenreIdIn(List<Genre> FkGenreId);
 }

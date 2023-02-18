@@ -9,5 +9,5 @@ import java.util.List;
 public interface UserGenreRepository extends JpaRepository<UserGenre, Long> {
     List<UserGenre> findByFkUserId(User fkUserId);
 
-    int deleteAllByFkUserId(User fkUserId);
+    int deleteByFkUserId(User fkUserId);
 }

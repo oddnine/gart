@@ -32,7 +32,7 @@ public class WorkGenreService {
     }
 
     public void updateWorkGenres(Work work, List<Genre> genres) {
-        deleteAllByWorkId(work);
+        deleteByWorkId(work);
 
         List<WorkGenre> workGenres = new ArrayList<>();
         for (Genre genre : genres) {
@@ -52,11 +52,11 @@ public class WorkGenreService {
     }
 
     public List<WorkDto> findByFkGenreIds(List<Genre> genres) {
-        List<WorkGenre> findWorkGenres = workGenreRepository.findAllByFkGenreIdIn(genres);
+        List<WorkGenre> findWorkGenres = workGenreRepository.findByFkGenreIdIn(genres);
         return workService.findByWorkGenre(findWorkGenres);
     }
 
-    public int deleteAllByWorkId(Work work) {
-        return workGenreRepository.deleteAllByFkWorkId(work);
+    public int deleteByWorkId(Work work) {
+        return workGenreRepository.deleteByFkWorkId(work);
     }
 }

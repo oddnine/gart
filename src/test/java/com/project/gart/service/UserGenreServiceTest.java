@@ -120,7 +120,7 @@ class UserGenreServiceTest {
 
         userGenreService.saveUserGenres(user, genres);
 
-        assertThat(userGenreService.deleteAllByUserId(user)).isEqualTo(2);
+        assertThat(userGenreService.deleteByUserId(user)).isEqualTo(2);
     }
 
     @Test

@@ -2,9 +2,7 @@ package com.project.gart.service;
 
 import com.project.gart.domain.Post;
 import com.project.gart.domain.User;
-import com.project.gart.domain.Work;
 import com.project.gart.domain.dto.PostDto;
-import com.project.gart.domain.dto.UserDto;
 import com.project.gart.repository.PostRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +42,7 @@ public class PostService {
     public List<PostDto> findByUserName(String name) {
         List<User> findUser = userService.findByName(name);
 
-        List<Post> findPosts = postRepository.findAllByFkUserIdIn(findUser);
+        List<Post> findPosts = postRepository.findByFkUserIdIn(findUser);
 
         List<PostDto> postDtoList = new ArrayList<>();
 
@@ -63,6 +61,16 @@ public class PostService {
 
         for (Post post : findPost) {
             postDtoList.add(new PostDto(post));
+        }
+
+        return postDtoList;
+    }
+
+    public List<PostDto> findByPostTitleContaining(String postTitle) {
+        List<Post> findPosts = postRepository.findByPostTitleContaining(postTitle);
+        List<PostDto> postDtoList = new ArrayList<>();
+        for (Post findPost : findPosts) {
+            postDtoList.add(new PostDto(findPost));
         }
 
         return postDtoList;

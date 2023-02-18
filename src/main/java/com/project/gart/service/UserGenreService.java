@@ -3,7 +3,6 @@ package com.project.gart.service;
 import com.project.gart.domain.Genre;
 import com.project.gart.domain.User;
 import com.project.gart.domain.UserGenre;
-import com.project.gart.domain.Work;
 import com.project.gart.domain.dto.WorkDto;
 import com.project.gart.repository.UserGenreRepository;
 import jakarta.transaction.Transactional;
@@ -35,7 +34,7 @@ public class UserGenreService {
     }
 
     public void updateUserGenres(User user, List<Genre> genres) {
-        deleteAllByUserId(user);
+        deleteByUserId(user);
 
         List<UserGenre> userGenres = new ArrayList<>();
         for (Genre genre : genres) {
@@ -54,8 +53,8 @@ public class UserGenreService {
         return userGenreRepository.findByFkUserId(user);
     }
 
-    public int deleteAllByUserId(User user) {
-        return userGenreRepository.deleteAllByFkUserId(user);
+    public int deleteByUserId(User user) {
+        return userGenreRepository.deleteByFkUserId(user);
     }
 
     public List<WorkDto> findWorkByUserGenre(User user) {
