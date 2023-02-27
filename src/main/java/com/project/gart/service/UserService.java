@@ -34,14 +34,11 @@ public class UserService {
     }
 
     public User findByEmail(String email) {
-        return userRepository.findByEmail(email).orElse(null);
+        return userRepository.findByEmail(email).orElseThrow(() -> new NullPointerException("유저 조회 결과가 없습니다."));
     }
 
     public Boolean login(String email, String password) {
-        User findUser = userRepository.findByEmail(email).orElse(null);
-        if (findUser == null) {
-            return false;
-        }
+        User findUser = userRepository.findByEmail(email).orElseThrow(() -> new NullPointerException("유저 조회 결과가 없습니다."));
         return findUser.validatePassword(password);
     }
 }

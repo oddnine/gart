@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class DealDto {
+    private Long dealId;
     private String dealTitle;
     private String dealDescription;
     private int dealPrice;
@@ -22,7 +23,8 @@ public class DealDto {
     private Long fkUserId;
 
     @Builder
-    public DealDto(String dealTitle, String dealDescription, int dealPrice, LocalDateTime uploadDate, Boolean isDelete, Work fkWorkId, User fkUserId) {
+    public DealDto(Long dealId, String dealTitle, String dealDescription, int dealPrice, LocalDateTime uploadDate, Boolean isDelete, Work fkWorkId, User fkUserId) {
+        this.dealId = dealId;
         this.dealTitle = dealTitle;
         this.dealDescription = dealDescription;
         this.dealPrice = dealPrice;
@@ -33,6 +35,7 @@ public class DealDto {
     }
 
     public DealDto(Deal deal) {
+        this.dealId = deal.getDealId();
         this.dealTitle = deal.getDealTitle();
         this.dealDescription = deal.getDealDescription();
         this.dealPrice = deal.getDealPrice();

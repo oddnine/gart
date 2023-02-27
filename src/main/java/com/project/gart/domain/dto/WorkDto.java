@@ -12,6 +12,7 @@ import java.util.Date;
 
 @Data
 public class WorkDto {
+    private Long workId;
     private String workName;
     private String workResource;
     private Date workDate;
@@ -21,7 +22,8 @@ public class WorkDto {
     private Long fkUserId;
 
     @Builder
-    public WorkDto(String workName, String workResource, Date workDate, String workCategory, String workDescription, Boolean isDelete, User fkUserId) {
+    public WorkDto(Long workId, String workName, String workResource, Date workDate, String workCategory, String workDescription, Boolean isDelete, User fkUserId) {
+        this.workId = workId;
         this.workName = workName;
         this.workResource = workResource;
         this.workDate = workDate;
@@ -32,6 +34,7 @@ public class WorkDto {
     }
 
     public WorkDto(Work work) {
+        this.workId = work.getWorkId();
         this.workName = work.getWorkName();
         this.workResource = work.getWorkResource();
         this.workDate = work.getWorkDate();

@@ -9,6 +9,7 @@ import java.util.Date;
 
 @Data
 public class UserDto {
+    private Long userId;
     private String email;
     private String password;
     private String name;
@@ -17,7 +18,8 @@ public class UserDto {
     private String photo;
 
     @Builder
-    public UserDto(String email, String password, String name, Date birthday, String address, String photo) {
+    public UserDto(Long userId, String email, String password, String name, Date birthday, String address, String photo) {
+        this.userId = userId;
         this.email = email;
         this.password = password;
         this.name = name;
@@ -27,6 +29,7 @@ public class UserDto {
     }
 
     public UserDto(User user) {
+        this.userId = user.getUserId();
         this.email = user.getEmail();
         this.password = user.getPassword();
         this.name = user.getName();

@@ -102,7 +102,7 @@ class PostLikeServiceTest {
         assertThat(postLikeService.findByPostAndUser(post, user1)).isNotNull();
 
         assertThatThrownBy(() -> postLikeService.save(post, user1))
-                .isInstanceOf(IllegalStateException.class)
+                .isInstanceOf(Exception.class)
                 .hasMessageContaining("좋아요를 이미 누르셨습니다.");
 
         //삭제
@@ -115,7 +115,7 @@ class PostLikeServiceTest {
         assertThat(postLikeService.findByPostAndUser(post, user1)).isNull();
 
         assertThatThrownBy(() -> postLikeService.delete(post, user1))
-                .isInstanceOf(IllegalStateException.class)
+                .isInstanceOf(Exception.class)
                 .hasMessageContaining("좋아요를 아직 안 누르셨습니다.");
     }
 

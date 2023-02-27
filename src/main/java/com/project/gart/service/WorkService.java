@@ -30,11 +30,11 @@ public class WorkService {
     }
 
     public WorkDto findByWorkId(Long workId) {
-        return new WorkDto(Objects.requireNonNull(workRepository.findById(workId).orElse(null)));
+        return new WorkDto(workRepository.findById(workId).orElseThrow(() -> new NullPointerException("작품 조회 결과가 없습니다.")));
     }
 
     public void delete(Long workId) {
-        Work findWork = workRepository.findById(workId).orElse(null);
+        Work findWork = workRepository.findById(workId).orElseThrow(() -> new NullPointerException("작품 조회 결과가 없습니다."));
         findWork.deleteWork();
     }
 

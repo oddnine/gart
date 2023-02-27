@@ -23,9 +23,7 @@ public class PostService {
     }
 
     public PostDto findById(Long id) {
-        Post post = postRepository.findById(id).orElse(null);
-        if (post == null)
-            return null;
+        Post post = postRepository.findById(id).orElseThrow(() -> new NullPointerException("포스트 조회 결과가 없습니다."));
         return new PostDto(post);
     }
 
@@ -54,7 +52,12 @@ public class PostService {
     }
 
     public List<PostDto> findByUserEmail(String email) {
-        User findUser = userService.findByEmail(email);
+        User findUser = null;
+        try {
+            findUser = userService.findByEmail(email);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
         List<Post> findPost = postRepository.findByFkUserId(findUser);
         List<PostDto> postDtoList = new ArrayList<>();

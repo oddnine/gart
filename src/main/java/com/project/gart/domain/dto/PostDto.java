@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class PostDto {
+    private Long postId;
     private String postTitle;
     private String postDescription;
     private LocalDateTime postDate;
@@ -21,7 +22,8 @@ public class PostDto {
     private Long fkUserId;
 
     @Builder
-    public PostDto(String postTitle, String postDescription, LocalDateTime postDate, Boolean isDelete, Work fkWorkId, User fkUserId) {
+    public PostDto(Long postId, String postTitle, String postDescription, LocalDateTime postDate, Boolean isDelete, Work fkWorkId, User fkUserId) {
+        this.postId = postId;
         this.postTitle = postTitle;
         this.postDescription = postDescription;
         this.postDate = postDate;
@@ -31,6 +33,7 @@ public class PostDto {
     }
 
     public PostDto(Post post) {
+        this.postId = post.getPostId();
         this.postTitle = post.getPostTitle();
         this.postDescription = post.getPostDescription();
         this.postDate = post.getPostDate();

@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.sql.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 @Transactional
@@ -52,7 +53,7 @@ class UserServiceTest {
     }
 
     @Test
-    public void login() {
+    public void login() throws Exception {
         User user = User.builder()
                 .email("hyuk@naver.com")
                 .address("경기도")
@@ -66,6 +67,8 @@ class UserServiceTest {
 
         assertThat(userService.login(user.getEmail(), user.getPassword())).isTrue();
         assertThat(userService.login(user.getEmail(), "fsdfdsfsd")).isFalse();
-        assertThat(userService.login("qweqwer", "qweqewwqe")).isFalse();
+        assertThatThrownBy(() -> userService.login("qweqwer", "qweqewwqe"))
+                .isInstanceOf(Exception.class)
+                .hasMessageContaining("유저 조회 결과가 없습니다.");
     }
 }
